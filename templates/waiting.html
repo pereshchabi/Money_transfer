@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>En attente de confirmation</title>
+
+    <!-- Style et animations CSS -->
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #f9c7ff, #c9f2ff);
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            animation: fadeIn 2s ease-out;
+        }
+
+        h1 {
+            font-size: 3rem;
+            color: #4CAF50;
+            text-align: center;
+            animation: slideIn 1.5s ease-out;
+        }
+
+        p {
+            font-size: 1.5rem;
+            color: #444;
+            text-align: center;
+            margin-top: 20px;
+            animation: fadeIn 2s ease-out;
+        }
+
+        strong {
+            font-weight: bold;
+            color: #FF5733;
+        }
+
+        .info-message {
+            font-size: 1.2rem;
+            color: #ff9800;
+            text-align: center;
+            margin-top: 30px;
+            animation: fadeIn 2s ease-out;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            margin-top: 30px;
+            gap: 20px;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 1.2rem;
+            border-radius: 5px;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #45a049;
+            transform: translateY(-3px);
+        }
+
+        button:active {
+            transform: translateY(1px);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* Animation pour les éléments */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(-30px); }
+            to { transform: translateY(0); }
+        }
+
+        .timer-button {
+            background-color: #f44336;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 1.2rem;
+            border-radius: 5px;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .timer-button:hover {
+            background-color: #d32f2f;
+            transform: translateY(-3px);
+        }
+
+        .timer-button:active {
+            transform: translateY(1px);
+        }
+    </style>
+
+    <!-- Inclusion de la bibliothèque Socket.IO -->
+    <script type="text/javascript" src="https://cdn.socket.io/4.1.2/socket.io.min.js"></script>
+
+    <script type="text/javascript">
+        // Connexion au serveur Socket.IO
+        var socket = io.connect('http://' + document.domain + ':' + location.port);
+
+        // Écouter les mises à jour de statut pour la transaction
+        socket.on('transaction_status', function(data) {
+            if (data.transaction_id == {{ transaction.transaction_id }}) {
+                document.getElementById('status').innerText = data.status;
+            }
+        });
+
+        // Fonction pour afficher le message et les boutons après confirmation
+        function handleConfirmation() {
+            // Afficher le message de patience après la confirmation
+            document.getElementById("message-patienter").classList.remove("hidden");
+
+            // Après 30 secondes, afficher les autres boutons
+            setTimeout(function() {
+                document.getElementById("completed-button").classList.remove("hidden");
+                document.getElementById("whatsapp-button").classList.remove("hidden");
+            }, 30000); // 30 secondes
+        }
+    </script>
+
+</head>
+<body>
+
+    <!-- Conteneur principal de la page -->
+    <div>
+        <h1>Transaction en attente</h1>
+
+        <!-- Affichage des informations de la transaction -->
+        <p>Status actuel : <strong id="status">{{ transaction.status }}</strong></p>
+
+        <!-- Message indiquant que la boîte de dialogue sera envoyée sur le téléphone -->
+        <div class="info-message">
+            <p>Vous recevrez une boîte de confirmation sur votre téléphone  <strong>{{ transaction.sender_number }}</strong>.</p>
+        </div>
+
+        <!-- Message pour patienter 30 secondes -->
+        <div id="message-patienter" class="hidden">
+            <p>Veuillez patienter 30 secondes pour la réception sur le numéro récepteur...</p>
+        </div>
+
+        <!-- Bouton de confirmation -->
+        <div class="buttons">
+            <button id="confirm-button" onclick="handleConfirmation()">Confirmation effectuée</button>
+        </div>
+
+        <!-- Boutons après 30 secondes -->
+        <div class="buttons">
+            <button id="completed-button" class="hidden" onclick="window.location.href='{{ url_for('home') }}'">Transaction effectuée - Retour à l'accueil</button>
+            <button id="whatsapp-button" class="hidden" onclick="window.location.href='https://wa.me/22950197706'">Contacter via WhatsApp</button>
+        </div>
+
+        <!-- Formulaire pour laisser un avis -->
+        <style>
+            .feedback-form {
+                width: 80%;
+                max-width: 600px;
+                margin: 0 auto;
+                padding: 20px;
+                background-color: #f9f9f9;
+                border-radius: 8px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            }
+        
+            .feedback-form h2 {
+                text-align: center;
+                color:rgb(4, 21, 5);
+                font-size: 24px;
+            }
+        
+            .feedback-form textarea {
+                width: 100%;
+                height: 150px;
+                padding: 10px;
+                font-size: 16px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                box-sizing: border-box;
+                margin-top: 10px;
+                resize: none;
+            }
+        
+            .feedback-form button {
+                width: 100%;
+                padding: 12px;
+                background-color: #4CAF50;
+                color: white;
+                font-size: 16px;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                margin-top: 10px;
+                transition: background-color 0.3s;
+            }
+        
+            .feedback-form button:hover {
+                background-color: #45a049;
+            }
+        
+            .feedback-form button:active {
+                background-color: #388e3c;
+            }
+        </style>
+        
+        <div class="feedback-form">
+            <h2>Laissez votre avis après avoir finaliser votre transaction </h2>
+            <form method="POST" action="{{ url_for('submit_feedback') }}">
+                <textarea name="feedback" placeholder="Écrivez votre avis ici..." required></textarea><br>
+                <button type="submit">Soumettre l'avis</button>
+            </form>
+        </div>
+        
+    </div>
+
+</body>
+</html>

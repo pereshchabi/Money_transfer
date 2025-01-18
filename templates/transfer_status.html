@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Status du Transfert</title>
+</head>
+<body>
+    <h1>Status de votre demande de transfert</h1>
+    <p>Réseau émetteur : {{ transfer.sender_network }}</p>
+    <p>Réseau récepteur : {{ transfer.receiver_network }}</p>
+    <p>Numéro de transaction : {{ transfer.transaction_number }}</p>
+    <p>Nom du récepteur : {{ transfer.receiver_name }}</p>
+    <p>Status : {{ transfer.status }}</p>
+
+    <a href="/">Retour à l'accueil</a>
+</body>
+</html>

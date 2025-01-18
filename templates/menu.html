@@ -1,0 +1,12 @@
+<nav class="menu">
+    <ul>
+        <li><a href="/">Accueil</a></li>
+        <li><a href="/transfers">Transferts</a></li>
+        {% if logged_in %}
+            <li><a href="/logout">Déconnexion</a></li>
+        {% else %}
+            <li><a href="/login">Connexion</a></li>
+            <li><a href="/register">Inscription</a></li>
+        {% endif %}
+    </ul>
+</nav>

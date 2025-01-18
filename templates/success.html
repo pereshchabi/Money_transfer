@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Succès</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <h1>Transaction Réussie !</h1>
+    <h2>Liste des Transactions :</h2>
+    <ul>
+        {% for transaction in transactions %}
+            <li>
+                <strong>De :</strong> {{ transaction.sender_network }}<br>
+                <strong>À :</strong> {{ transaction.receiver_network }}<br>
+                <strong>Transaction # :</strong> {{ transaction.transaction_number }}<br>
+                <strong>Nom :</strong> {{ transaction.receiver_name }}<br>
+                <strong>Numéro :</strong> {{ transaction.receiver_number }}
+            </li>
+        {% endfor %}
+    </ul>
+    <a href="/">Retour au formulaire</a>
+</body>
+</html>

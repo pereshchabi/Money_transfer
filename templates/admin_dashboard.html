@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tableau de bord Administrateur</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f7fc;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 80%;
+            margin-top: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #4CAF50;
+            font-size: 2.5rem;
+        }
+
+        h2 {
+            color: #4CAF50;
+            font-size: 1.8rem;
+            margin-top: 20px;
+        }
+
+        .transaction-list {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .transaction-item {
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .transaction-item h3 {
+            margin: 0;
+            color: #333;
+            font-size: 1.4rem;
+        }
+
+        .transaction-item p {
+            font-size: 1.1rem;
+            margin: 5px 0;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        button:active {
+            transform: translateY(1px);
+        }
+
+        .reject-button {
+            background-color: #f44336;
+        }
+
+        .reject-button:hover {
+            background-color: #d32f2f;
+        }
+
+        .reject-button:active {
+            transform: translateY(1px);
+        }
+
+        .transaction-header {
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-top: 20px;
+            color: #4CAF50;
+        }
+
+        .pending-transaction, .validated-transaction {
+            font-size: 1.1rem;
+            color: #444;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Tableau de bord Administrateur</h1>
+
+        <h2>Transactions en attente</h2>
+        <div class="transaction-list">
+            {% if no_pending_transactions %}
+                <p>Aucune transaction en attente.</p>
+            {% else %}
+                {% for transaction in pending_transactions %}
+                    <div class="transaction-item">
+                        <h3>Transaction ID: {{ transaction.transaction_id }}</h3>
+                        <p><strong>Réseau de retrait:</strong> {{ transaction.sender_network }}</p>
+                        <p><strong>Réseau de depot:</strong> {{ transaction.receiver_network }}</p>
+                        <p><strong>Numéro de retrait:</strong> {{ transaction.transaction_number }}</p>
+                        <p><strong>Nom associé au dépot:</strong> {{ transaction.receiver_name }}</p>
+                        <p><strong>Numéro de dépot:</strong> {{ transaction.receiver_number }}</p>
+                        <p><strong>Status:</strong> {{ transaction.status }}</p>
+
+                        <div class="buttons">
+                            <form method="POST" action="{{ url_for('validate_transfer', transaction_id=transaction.transaction_id) }}">
+                                <button type="submit">Valider</button>
+                            </form>
+                            <form method="POST" action="{{ url_for('reject_transfer', transaction_id=transaction.transaction_id) }}">
+                                <button type="submit" class="reject-button">Rejeter</button>
+                            </form>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+
+        <h2>Transactions validées</h2>
+        <div class="transaction-list">
+            {% if no_validated_transactions %}
+                <p>Aucune transaction validée.</p>
+            {% else %}
+                {% for transaction in validated_transactions %}
+                    <div class="validated-transaction">
+                        <p><strong>Transaction ID:</strong> {{ transaction.transaction_id }}</p>
+                        <p><strong>Réseau de retrait:</strong> {{ transaction.sender_network }}</p>
+                        <p><strong>Réseau de dépot:</strong> {{ transaction.receiver_network }}</p>
+                        <p><strong>Numéro de retrait :</strong> {{ transaction.transaction_number }}</p>
+                        <p><strong>Nom associé au dépot:</strong> {{ transaction.receiver_name }}</p>
+                        <p><strong>Numéro de dépot:</strong> {{ transaction.receiver_number }}</p>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+
+    <script>
+        // Rafraîchissement automatique de la page toutes les 2 secondes
+        setInterval(function(){
+            location.reload();
+        }, 2000);
+    </script>
+</body>
+</html>
+

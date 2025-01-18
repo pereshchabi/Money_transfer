@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion des Transferts</title>
+</head>
+<body>
+    <h1>Demandes de Transfert</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Utilisateur</th>
+                <th>Réseau émetteur</th>
+                <th>Réseau récepteur</th>
+                <th>Numéro de transaction</th>
+                <th>Nom du récepteur</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for transfer in transfers %}
+            <tr>
+                <td>{{ transfer.user }}</td>
+                <td>{{ transfer.sender_network }}</td>
+                <td>{{ transfer.receiver_network }}</td>
+                <td>{{ transfer.transaction_number }}</td>
+                <td>{{ transfer.receiver_name }}</td>
+                <td>{{ transfer.status }}</td>
+                <td>
+                    {% if transfer.status == 'En attente' %}
+                        <a href="{{ url_for('confirm_transfer', transfer_id=loop.index0) }}">Confirmer</a> |
+                        <a href="{{ url_for('reject_transfer', transfer_id=loop.index0) }}">Rejeter</a>
+                    {% else %}
+                        <span>{{ transfer.status }}</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transferts</title>
+    <link rel="stylesheet" href="/static/styles.css">
+    <!-- Style interne pour les animations et les couleurs -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(45deg, #f3ec78, #af4261); /* Fond avec un dégradé */
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 1.5s ease-in-out; /* Animation d'apparition */
+        }
+        h1 {
+            color: #ffaa00;
+            text-align: center;
+            animation: colorChange 3s infinite; /* Animation de changement de couleur */
+        }
+        .input-group {
+            margin-bottom: 15px;
+        }
+        .input-group label {
+            display: block;
+            color: #008000; /* Vert pour les labels */
+            margin-bottom: 5px;
+        }
+        .input-group input, .input-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            transition: border 0.3s ease; /* Transition pour les champs de formulaire */
+        }
+        .input-group input:focus, .input-group select:focus {
+            border-color: #0000ff; /* Bleu pour les champs en focus */
+        }
+        .btn {
+            display: inline-block;
+            width: 100%;
+            padding: 10px;
+            background: #ffaa00; /* Jaune pour le bouton */
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s ease; /* Transition pour le bouton */
+            font-size: 16px;
+        }
+        .btn:hover {
+            background: #ff8800; /* Couleur du bouton au survol */
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        @keyframes colorChange {
+            0% {
+                color: #ffaa00;
+            }
+            50% {
+                color: #008000;
+            }
+            100% {
+                color: #0000ff;
+            }
+        }
+    </style>
+</head>
+<body>
+    {% include 'menu.html' %}
+    <!-- Conteneur principal avec le formulaire de transfert -->
+    <div class="container">
+        <h1> Transfert</h1>
+        <form action="/transfers" method="POST">
+            <div class="input-group">
+                <label for="sender_network">Réseau émetteur</label>
+                <select id="sender_network" name="sender_network">
+                    <option>MTN</option>
+                    <option>Moov</option>
+                    <option>Celtis</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label for="receiver_network">Réseau récepteur</label>
+                <select id="receiver_network" name="receiver_network">
+                    <option>MTN</option>
+                    <option>Moov</option>
+                    <option>Celtis</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label for="transaction_number">Numéro Emetteur </label>
+                <input type="text" id="transaction_number" name="transaction_number" required>
+            </div>
+            <div class="input-group">
+                <label for="receiver_number">Numéro récepteur</label>
+                <input type="text" id="receiver_number" name="receiver_number" required>
+            </div>
+            <div class="input-group">
+                <label for="receiver_name">Intitulé du numéro récepteur </label>
+                <input type="text" id="receiver_name" name="receiver_name" required>
+            </div>
+            <button type="submit" class="btn">Envoyer</button>
+        </form>
+    </div>
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulaire de Transfert</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <h1>Formulaire de Transfert</h1>
+    <form action="/submit" method="post">
+        <label for="sender_network">Réseau expéditeur :</label>
+        <select id="sender_network" name="sender_network" required>
+            {% for network in networks %}
+                <option value="{{ network }}">{{ network }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="receiver_network">Réseau destinataire :</label>
+        <select id="receiver_network" name="receiver_network" required>
+            {% for network in networks %}
+                <option value="{{ network }}">{{ network }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="transaction_number">Numéro de transaction :</label>
+        <input type="text" id="transaction_number" name="transaction_number" required>
+
+        <label for="receiver_name">Nom du destinataire :</label>
+        <input type="text" id="receiver_name" name="receiver_name" required>
+
+        <label for="receiver_number">Numéro du destinataire :</label>
+        <input type="text" id="receiver_number" name="receiver_number" required>
+
+        <button type="submit">Envoyer</button>
+    </form>
+</body>
+</html>
